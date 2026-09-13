@@ -1,0 +1,157 @@
+---
+layout: page
+# All the Tags of posts.
+---
+
+<div id="tags" class="d-flex flex-wrap mx-xl-2">
+  {% assign tags = '' | split: '' %}
+  {% for t in site.tags %}
+    {% assign tags = tags | push: t[0] %}
+  {% endfor %}
+
+  {% assign sorted_tags = tags | sort_natural %}
+
+  {% for t in sorted_tags %}
+    <div>
+      <a class="tag" href="{{ t | slugify | url_encode | prepend: '/tags/' | append: '/' | relative_url }}">
+        {{ t -}}
+        <span class="text-muted">{{ site.tags[t].size }}</span>
+      </a>
+    </div>
+  {% endfor %}
+</div>
+
+<div class="tag-particles-wrap" style="margin-top: 2.5rem;">
+  <canvas id="tag-particles"></canvas>
+  <p class="text-muted small text-center">点击圆点可进入对应标签</p>
+</div>
+
+<script>
+  const TAG_DATA = [
+    {% for t in sorted_tags %}
+    { name: {{ t | jsonify }}, url: {{ t | slugify | url_encode | prepend: '/tags/' | append: '/' | relative_url | jsonify }} }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ];
+</script>
+
+<script>
+  (function () {
+    const canvas = document.getElementById('tag-particles');
+    if (!canvas || !TAG_DATA.length) return;
+    const ctx = canvas.getContext('2d');
+    const wrap = canvas.parentElement;
+    const H = 420;
+    let W = 0;
+
+    const css = getComputedStyle(document.documentElement);
+    const textColor = (css.getPropertyValue('--text-color') || '#34343c').trim();
+    const accent = (css.getPropertyValue('--link-color') || '#0056b2').trim();
+
+    const nodes = TAG_DATA.map(function (t) {
+      return { name: t.name, url: t.url, x: 0, y: 0, vx: 0, vy: 0, r: 26 };
+    });
+
+    function layoutNodes() {
+      ctx.font = '13px system-ui, sans-serif';
+      nodes.forEach(function (n) {
+        n.r = Math.max(26, ctx.measureText(n.name).width / 2 + 14);
+        n.x = 0.1 + Math.random() * 0.8;
+        n.y = 0.15 + Math.random() * 0.7;
+        n.vx = (Math.random() - 0.5) * 0.0018;
+        n.vy = (Math.random() - 0.5) * 0.0018;
+      });
+    }
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      W = wrap.clientWidth;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    resize();
+    layoutNodes();
+    window.addEventListener('resize', resize);
+
+    const mouse = { x: -1e4, y: -1e4 };
+
+    canvas.addEventListener('mousemove', function (e) {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    });
+    canvas.addEventListener('mouseleave', function () {
+      mouse.x = -1e4;
+      mouse.y = -1e4;
+    });
+    canvas.addEventListener('click', function (e) {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+      for (let i = 0; i < nodes.length; i++) {
+        if (Math.hypot(nodes[i].x * W - mx, nodes[i].y * H - my) < nodes[i].r + 6) {
+          window.location.href = nodes[i].url;
+          return;
+        }
+      }
+    });
+
+    const LINK_DIST = 170;
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      nodes.forEach(function (n) {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0.08 || n.x > 0.92) n.vx *= -1;
+        if (n.y < 0.12 || n.y > 0.88) n.vy *= -1;
+      });
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const d = Math.hypot((nodes[i].x - nodes[j].x) * W, (nodes[i].y - nodes[j].y) * H);
+          if (d < LINK_DIST) {
+            ctx.strokeStyle = 'rgba(110,150,160,' + (0.55 * (1 - d / LINK_DIST)).toFixed(3) + ')';
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x * W, nodes[i].y * H);
+            ctx.lineTo(nodes[j].x * W, nodes[j].y * H);
+            ctx.stroke();
+          }
+        }
+        const md = Math.hypot(nodes[i].x * W - mouse.x, nodes[i].y * H - mouse.y);
+        if (md < LINK_DIST + 40) {
+          ctx.strokeStyle = 'rgba(110,150,160,' + (0.45 * (1 - md / (LINK_DIST + 40))).toFixed(3) + ')';
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x * W, nodes[i].y * H);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+
+      ctx.font = '13px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      nodes.forEach(function (n) {
+        const x = n.x * W, y = n.y * H;
+        const hovered = Math.hypot(x - mouse.x, y - mouse.y) < n.r + 6;
+        canvas.style.cursor = hovered ? 'pointer' : 'default';
+
+        ctx.beginPath();
+        ctx.arc(x, y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(90,140,160,0.15)';
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = accent;
+        ctx.stroke();
+        ctx.fillStyle = textColor;
+        ctx.fillText(n.name, x, y);
+      });
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+</script>
