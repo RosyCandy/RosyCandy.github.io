@@ -3,16 +3,17 @@
 - type: github
   icon: "fab fa-github"
 
-- type: twitter
-  icon: "fa-brands fa-x-twitter"
+- type: weibo
+  icon: "fa-brands fa-weibo"
+  url: "https://weibo.com/u/8218386428"
 
-- type: email
-  icon: "fas fa-envelope"
-  noblank: true # open link in current tab
+- type: cnblogs
+  icon: "fa-solid fa-blog"
+  url: "https://www.cnblogs.com/erieanna"
 
-- type: rss
-  icon: "fas fa-rss"
-  noblank: true
+- type: csdn
+  icon: "iconfont icon-csdn"
+  url: "https://blog.csdn.net/2301_80939691"
 # Uncomment and complete the url below to enable more contact options
 #
 # - type: mastodon

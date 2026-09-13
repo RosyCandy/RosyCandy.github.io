@@ -12,6 +12,9 @@
 {%- endif -%}
 ';
 
+/* append your custom style below */
+
+/* ===== 浅色模式下，卡片背景改成蓝绿色 ===== */
 :root[data-bs-theme='light'] {
   --card-bg: #d3e6e9;
 }
@@ -20,4 +23,44 @@
   @media (prefers-color-scheme: light) {
     --card-bg: #d3e6e9;
   }
+}
+
+/* ===== CSDN 图标字体（来自你老网站的阿里 iconfont） ===== */
+@font-face {
+  font-family: 'iconfont';
+  src: url('https://at.alicdn.com/t/c/font_5144765_f9fez7wbd2f.woff2?t=1774094680667') format('woff2'),
+    url('https://at.alicdn.com/t/c/font_5144765_f9fez7wbd2f.woff?t=1774094680667') format('woff'),
+    url('https://at.alicdn.com/t/c/font_5144765_f9fez7wbd2f.ttf?t=1774094680667') format('truetype');
+}
+
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-csdn::before {
+  content: '\e638';
+}
+
+/* ===== CSDN 图标字体（来自阿里 iconfont） ===== */
+@font-face {
+  font-family: 'iconfont';
+  src: url('https://at.alicdn.com/t/c/font_5144765_f9fez7wbd2f.woff2?t=1774094680667') format('woff2'),
+    url('https://at.alicdn.com/t/c/font_5144765_f9fez7wbd2f.woff?t=1774094680667') format('woff'),
+    url('https://at.alicdn.com/t/c/font_5144765_f9fez7wbd2f.ttf?t=1774094680667') format('truetype');
+}
+
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-csdn::before {
+  content: '\e638';
 }

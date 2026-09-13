@@ -1,6 +1,8 @@
 ---
 title: ADB安装过程
 date: 2026-05-29
+categories: [技术]
+tags: [ADB, Android]
 ---
 
 安装 adb

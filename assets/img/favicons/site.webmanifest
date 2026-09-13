@@ -1,0 +1,11 @@
+{
+  "name": "Erieanna",
+  "short_name": "Erieanna",
+  "icons": [
+    { "src": "/assets/img/favicons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/assets/img/favicons/favicon-96x96.png", "sizes": "96x96", "type": "image/png" }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}

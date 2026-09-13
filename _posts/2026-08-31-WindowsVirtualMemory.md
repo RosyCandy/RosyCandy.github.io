@@ -1,6 +1,8 @@
 ---
 title: Windows虚拟内存
 date: 2026-08-31
+categories: [技术]
+tags: [Windows]
 ---
 
 Windows 虚拟内存（pagefile.sys）管理与配置指南

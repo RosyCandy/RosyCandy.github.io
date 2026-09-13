@@ -1,6 +1,8 @@
 ---
 title: 在LINUX系统直接重装windows系统（ventoy）
 date: 2026-07-26
+categories: [技术]
+tags: [Windows, Linux]
 ---
 
 使用ventoy安装windows 10

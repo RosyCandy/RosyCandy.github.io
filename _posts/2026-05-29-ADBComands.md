@@ -1,6 +1,8 @@
 ---
 title: ADB常用指令
 date: 2026-05-29
+categories: [技术]
+tags: [ADB, Android]
 ---
 
 准备 / 连接

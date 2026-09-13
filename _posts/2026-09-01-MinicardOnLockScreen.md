@@ -1,6 +1,8 @@
 ---
 title: windows 锁屏界面小卡片 关闭方法
 date: 2026-09-01
+categories: [技术]
+tags: [Windows, 美化]
 ---
 
 这四个框是 Windows 11 的锁屏小组件（小卡片），默认会推送天气、Bing 趣味资讯、历史上的今天等动态信息。
